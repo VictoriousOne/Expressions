@@ -6,6 +6,12 @@ const thoughtController = {
     //get all thoughts
     getAllThoughts(req, res) {
         Thought.find({})
+            .populate({
+                path: 'reactions',
+                select: '-__v'
+            })
+            .select('-__v')
+            .sort({ _id: -1 })
             .then(dbThoughtData => res.json(dbThoughtData))
             .catch(err => {
                 console.log(err);
@@ -16,6 +22,11 @@ const thoughtController = {
     //get one user by id
     getThoughtById({ params }, res) {
         Thought.findOne({ _id: params.id })
+            .populate({
+                path: 'reactions',
+                select: '-__v'
+            })
+            .select('-__v')
             .then(dbThoughtData => {
                 //If no thought is found, send 404
                 if (!dbThoughtData) {
@@ -130,4 +141,4 @@ const thoughtController = {
 }
 
 
- module.exports = thoughtController;
+module.exports = thoughtController;
