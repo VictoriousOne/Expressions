@@ -43,9 +43,8 @@ const thoughtSchema = new Schema({
   },
   userName: {
     type: String,
-    unique: true,
-    required: 'User Name is Required',
-    trim: true
+    unique: false,
+    required: 'User Name is Required'
   },
   reactions: [reactionSchema]
 },

@@ -1,6 +1,7 @@
 
 const res = require('express/lib/response');
 const { User } = require('../models');
+const { Thought } = require('../models');
 
 const userController = {
     //get all users
@@ -69,6 +70,22 @@ const userController = {
                     return;
                 }
                 res.json(dbUserData);
+            })
+            .catch(err => res.status(400).json(err));
+    },
+
+    newDeleteUser({ params }, res) {
+        User.findOneAndDelete({ _id: params.id })
+            .then(dbUserData => {
+
+                console.log("The userName is:  " + dbUserData.userName);
+                if (!dbUserData) {
+                    res.status(404).json({ message: 'No user found with this id!' });
+                    return;
+                }
+                Thought.deleteMany({ userName : dbUserData.userName } )
+                .then(dbUserData => res.json(dbUserData));
+                
             })
             .catch(err => res.status(400).json(err));
     },
